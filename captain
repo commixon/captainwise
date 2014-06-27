@@ -1,0 +1,49 @@
+#!/bin/bash
+
+logo() {
+
+clear
+cat .logo
+
+}
+
+initialize() {
+
+VIRTUALENV_EXISTS=`command -v virtualenv`
+PIP_EXISTS=`command -v pip`
+
+if [ $VIRTUALENV_EXISTS ]; then
+    virtualenv --no-site-packages .
+else
+    sudo easy_install virtualenv
+    virtualenv --no-site-packages .
+fi
+
+
+echo "Upgrading setuptools"
+echo "--------------------"
+if [ $PIP_EXISTS ]; then
+    ./bin/pip install --upgrade setuptools
+else
+    sudo easy_install pip
+    ./bin/pip install --upgrade setuptools
+fi
+
+echo "Installing/Upgrading Ansible"
+echo "----------------------------"
+./bin/pip install ansible
+
+
+}
+
+
+
+#####################################################
+#
+#             M A I N
+#
+#####################################################
+
+logo
+initialize
+
